@@ -200,8 +200,7 @@
     .weather-right {
       display: flex;
       flex-direction: row;
-      align-items: flex-end;
-      /* baseline alignment for temp + degree */
+      align-items: flex-start;
     }
 
     .temp-number {
@@ -218,9 +217,9 @@
       font-size: 48px;
       font-weight: 500;
       color: var(--accent);
-      line-height: 72px;
+      line-height: 1;
+      margin-top: 4px;
       align-self: flex-start;
-      margin-top: 8px;
     }
 
     /* ── Stat Cards ── */
@@ -503,7 +502,7 @@
       }
       .temp-unit {
         font-size: 32px;
-        line-height: 48px;
+        line-height: 1;
       }
       .stat-cards {
         display: grid;
@@ -574,7 +573,7 @@
       }
       .temp-unit {
         font-size: 36px;
-        line-height: 54px;
+        line-height: 1;
       }
       .stat-cards {
         display: grid;
