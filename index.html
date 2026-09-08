@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1440" />
+  <title>WÆR.OPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0D0D0E;
+      --panel: #161618;
+      --stat: #1E1E23;
+      --accent: #F9FC4E;
+      --white: #FFFFFF;
+      --gray: #888888;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 1440px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 1440px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(249, 252, 78, 0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(249, 252, 78, 0); }
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      padding: 40px 0 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* ── WEATHER PANEL ── */
+    .weather-panel {
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .weather-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      min-height: 112px;
+    }
+
+    .weather-left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .metrics-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .city-name {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .condition {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .condition svg {
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .temp-display {
+      font-size: 96px;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      align-self: center;
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--stat);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stat-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-card-header svg {
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    /* ── PRODUCT SECTION ── */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--panel);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #0D0D0E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image-inner {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image-inner svg {
+      color: rgba(255,255,255,0.2);
+    }
+
+    .product-info {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .product-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.08);
+      border-radius: 100px;
+      padding: 5px 12px;
+      white-space: nowrap;
+    }
+
+    /* ── VIDEO SECTION ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .video-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .video-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--panel);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-thumb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+    }
+
+    .play-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .play-btn:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .play-btn svg {
+      color: var(--white);
+      margin-left: 3px;
+    }
+
+    .video-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .video-desc {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="logo">
+        <div class="logo-mark">
+          <!-- Lightning bolt -->
+          <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.5 2L4 10.5H9L7.5 16L14 7.5H9L10.5 2Z" fill="#0D0D0E" stroke="#0D0D0E" stroke-width="0.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="logo-text">WÆR.OPS</span>
+      </div>
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        Live Data Streaming
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="container" style="display:flex; flex-direction:column; gap:32px;">
+
+      <!-- WEATHER PANEL -->
+      <div class="weather-panel">
+        <!-- Top row -->
+        <div class="weather-top">
+          <div class="weather-left">
+            <span class="metrics-label">Current Metrics</span>
+            <span class="city-name">Reykjavík, Iceland</span>
+            <div class="condition">
+              <!-- Cloud/rain icon -->
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13.5C3.07 13.5 1.5 11.93 1.5 10C1.5 8.29 2.71 6.87 4.32 6.55C4.6 4.57 6.3 3 8.35 3C9.68 3 10.87 3.62 11.66 4.59C11.88 4.54 12.1 4.5 12.35 4.5C14.28 4.5 15.85 6.07 15.85 8C15.85 8.08 15.85 8.16 15.84 8.24C16.52 8.72 17 9.51 17 10.41C17 11.84 15.83 13 14.41 13H5Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 16L5 15M9 16L8 15M12 16L11 15" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+              <span id="condition-text">—</span>
+            </div>
+          </div>
+          <div class="temp-display" id="temp-display">—</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Stat cards -->
+        <div class="stat-grid">
+          <!-- Wind Speed -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" color="var(--accent)">
+                <path d="M2 7.5H11.5C12.88 7.5 14 6.38 14 5C14 3.62 12.88 2.5 11.5 2.5C10.12 2.5 9 3.62 9 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M2 10.5H13.5C14.88 10.5 16 11.62 16 13C16 14.38 14.88 15.5 13.5 15.5C12.12 15.5 11 14.38 11 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M2 9H9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              <span class="stat-label">Wind Speed</span>
+            </div>
+            <div class="stat-value" id="wind-value">—</div>
+          </div>
+
+          <!-- Humidity -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" color="var(--accent)">
+                <path d="M9 2L13.5 8.5C14.38 9.74 14.75 11.26 14.75 12C14.75 14.9 12.1 17.25 9 17.25C5.9 17.25 3.25 14.9 3.25 12C3.25 11.26 3.62 9.74 4.5 8.5L9 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              </svg>
+              <span class="stat-label">Humidity</span>
+            </div>
+            <div class="stat-value" id="humidity-value">—</div>
+          </div>
+
+          <!-- UV Index -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" color="var(--accent)">
+                <circle cx="9" cy="9" r="3.5" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M9 1.5V3M9 15V16.5M1.5 9H3M15 9H16.5M3.75 3.75L4.81 4.81M13.19 13.19L14.25 14.25M14.25 3.75L13.19 4.81M4.81 13.19L3.75 14.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              <span class="stat-label">UV Index</span>
+            </div>
+            <div class="stat-value" id="uv-value">—</div>
+          </div>
+
+          <!-- Feels Like -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" color="var(--accent)">
+                <path d="M9 11.5V4.5C9 3.67 8.33 3 7.5 3C6.67 3 6 3.67 6 4.5V11.5C5.13 12.06 4.5 13.04 4.5 14.25C4.5 16.04 5.96 17.5 7.75 17.5C9.54 17.5 11 16.04 11 14.25C11 13.04 10.37 12.06 9.5 11.5H9Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 7.5H11.5M9 5.5H12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              <span class="stat-label">Feels Like</span>
+            </div>
+            <div class="stat-value" id="feels-value">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCT SECTION -->
+      <section>
+        <div class="section-header">
+          <div>
+            <div class="section-title">WÆR.GEN-01 Technical Shells</div>
+            <div class="section-sub">Environmental Condition Trials</div>
+          </div>
+        </div>
+        <div class="product-grid">
+
+          <!-- Rain Shell V1 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="product-image-inner">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 4L22 12H18V20H10V12H6L14 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <span class="product-name">Rain Shell V1</span>
+              <span class="product-tag">Wet Weather Optimal</span>
+            </div>
+          </div>
+
+          <!-- Arctic Parka V2 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="product-image-inner">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 4V24M4 14H24M7 7L21 21M21 7L7 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <span class="product-name">Arctic Parka V2</span>
+              <span class="product-tag">Sub-Zero Tested</span>
+            </div>
+          </div>
+
+          <!-- UV Windbreaker -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="product-image-inner">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="14" cy="14" r="5" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M14 4V6M14 22V24M4 14H6M22 14H24M6.86 6.86L8.28 8.28M19.72 19.72L21.14 21.14M21.14 6.86L19.72 8.28M8.28 19.72L6.86 21.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <span class="product-name">UV Windbreaker</span>
+              <span class="product-tag">Extreme UV Blocking</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIDEO SECTION -->
+      <section>
+        <div class="section-header">
+          <div>
+            <div class="section-title">Performance Validation Archive</div>
+            <div class="section-sub">Raw lab tests and real-world stress testing telemetry</div>
+          </div>
+        </div>
+        <div class="video-grid">
+
+          <!-- Storm Test -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="play-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 5L16 10L7 15V5Z" fill="currentColor"/>
+                </svg>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Storm Test</div>
+              <div class="video-desc">Simulated 80mph horizontal rain deluge</div>
+            </div>
+          </div>
+
+          <!-- Arctic Trial -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="play-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 5L16 10L7 15V5Z" fill="currentColor"/>
+                </svg>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Arctic Trial</div>
+              <div class="video-desc">Static sub-zero thermal retention analysis</div>
+            </div>
+          </div>
+
+          <!-- UV Endurance -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="play-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 5L16 10L7 15V5Z" fill="currentColor"/>
+                </svg>
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">UV Endurance</div>
+              <div class="video-desc">Accelerated high-exposure synthetic solar test</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const API_URL = 'https://api.open-meteo.com/v1/forecast?latitude=64.1355&longitude=-21.8954&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,uv_index,weather_code,cloud_cover&wind_speed_unit=kmh&timezone=Atlantic%2FReykjavik';
+
+    function weatherCodeToText(code) {
+      if (code === 0) return 'Clear Sky';
+      if ([1, 2, 3].includes(code)) return 'Partly Cloudy';
+      if ([45, 48].includes(code)) return 'Fog';
+      if ([51, 53, 55].includes(code)) return 'Drizzle';
+      if ([61, 63, 65].includes(code)) return 'Rain';
+      if ([71, 73, 75].includes(code)) return 'Snow';
+      if ([80, 81, 82].includes(code)) return 'Rain Showers';
+      if ([95, 96, 99].includes(code)) return 'Thunderstorm';
+      return 'Unknown';
+    }
+
+    function uvIndexLabel(uv) {
+      if (uv <= 2) return 'Low';
+      if (uv <= 5) return 'Moderate';
+      if (uv <= 7) return 'High';
+      if (uv <= 10) return 'Very High';
+      return 'Extreme';
+    }
+
+    async function fetchWeather() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        const c = data.current;
+
+        const temp = c.temperature_2m != null ? Math.round(c.temperature_2m) + '°C' : '--';
+        const wind = c.wind_speed_10m != null ? c.wind_speed_10m.toFixed(1) + ' km/h' : '--';
+        const humidity = c.relative_humidity_2m != null ? c.relative_humidity_2m + '%' : '--';
+        const uv = c.uv_index != null ? c.uv_index.toFixed(2) + ' ' + uvIndexLabel(c.uv_index) : '--';
+        const feels = c.apparent_temperature != null ? c.apparent_temperature.toFixed(1) + ' °C' : '--';
+        const condition = c.weather_code != null ? weatherCodeToText(c.weather_code) : '--';
+
+        document.getElementById('temp-display').textContent = temp;
+        document.getElementById('wind-value').textContent = wind;
+        document.getElementById('humidity-value').textContent = humidity;
+        document.getElementById('uv-value').textContent = uv;
+        document.getElementById('feels-value').textContent = feels;
+        document.getElementById('condition-text').textContent = condition;
+      } catch (e) {
+        ['temp-display', 'wind-value', 'humidity-value', 'uv-value', 'feels-value', 'condition-text'].forEach(id => {
+          document.getElementById(id).textContent = '--';
+        });
+      }
+    }
+
+    fetchWeather();
+    setInterval(fetchWeather, 60000);
+  </script>
+</body>
+</html>
