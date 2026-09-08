@@ -608,9 +608,115 @@
         flex: unset;
       }
     }
+
+    /* ══════════════════════════════
+       HOVER WEATHER FX
+    ══════════════════════════════ */
+
+    #fx-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    /* WIND — horizontal motion blur sweep */
+    @keyframes wind-content {
+      0%   { filter: blur(0px);  transform: translateX(0px); }
+      12%  { filter: blur(8px);  transform: translateX(14px) skewX(-1deg); }
+      28%  { filter: blur(4px);  transform: translateX(-7px) skewX(0.5deg); }
+      45%  { filter: blur(6px);  transform: translateX(10px) skewX(-0.5deg); }
+      65%  { filter: blur(2px);  transform: translateX(-4px); }
+      82%  { filter: blur(1px);  transform: translateX(2px); }
+      100% { filter: blur(0px);  transform: translateX(0px); }
+    }
+    @keyframes wind-streaks {
+      0%   { opacity: 0;   transform: translateX(-100%); }
+      15%  { opacity: 1; }
+      85%  { opacity: 0.7; }
+      100% { opacity: 0;   transform: translateX(110%); }
+    }
+    .fx-wind #fx-overlay {
+      opacity: 1;
+      background: repeating-linear-gradient(
+        89deg,
+        transparent 0px,
+        rgba(255,255,255,0.025) 1px,
+        transparent 2px,
+        transparent 22px
+      );
+      animation: wind-streaks 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .fx-wind main {
+      animation: wind-content 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    /* HUMIDITY — vapor / condensation */
+    @keyframes vapor {
+      0%   { opacity: 0;   backdrop-filter: blur(0px);  -webkit-backdrop-filter: blur(0px); }
+      25%  { opacity: 1;   backdrop-filter: blur(3px);  -webkit-backdrop-filter: blur(3px); }
+      75%  { opacity: 1;   backdrop-filter: blur(3px);  -webkit-backdrop-filter: blur(3px); }
+      100% { opacity: 0;   backdrop-filter: blur(0px);  -webkit-backdrop-filter: blur(0px); }
+    }
+    .fx-humidity #fx-overlay {
+      opacity: 1;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(180,210,255,0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 65%, rgba(180,210,255,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255,255,255,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 40% 20%, rgba(200,230,255,0.07) 0%, transparent 45%);
+      animation: vapor 2.5s ease-in-out forwards;
+    }
+
+    /* UV — screen brightens with warm glow */
+    @keyframes uv-overlay {
+      0%   { opacity: 0; }
+      30%  { opacity: 1; }
+      75%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes uv-brightness {
+      0%   { filter: brightness(1); }
+      30%  { filter: brightness(1.22); }
+      75%  { filter: brightness(1.22); }
+      100% { filter: brightness(1); }
+    }
+    .fx-uv #fx-overlay {
+      opacity: 1;
+      background: radial-gradient(ellipse at 50% -10%, rgba(249,252,80,0.18) 0%, rgba(255,220,80,0.08) 40%, transparent 70%);
+      animation: uv-overlay 2s ease-in-out forwards;
+    }
+    .fx-uv main {
+      animation: uv-brightness 2s ease-in-out forwards;
+    }
+
+    /* FEELS LIKE — shiver */
+    @keyframes shiver {
+      0%   { transform: translateX(0) rotate(0deg); }
+      7%   { transform: translateX(-6px) rotate(-0.4deg); }
+      14%  { transform: translateX(6px)  rotate(0.4deg); }
+      21%  { transform: translateX(-5px) rotate(-0.3deg); }
+      28%  { transform: translateX(5px)  rotate(0.3deg); }
+      35%  { transform: translateX(-4px) rotate(-0.2deg); }
+      42%  { transform: translateX(4px)  rotate(0.2deg); }
+      50%  { transform: translateX(-3px); }
+      57%  { transform: translateX(3px); }
+      64%  { transform: translateX(-2px); }
+      71%  { transform: translateX(2px); }
+      80%  { transform: translateX(-1px); }
+      90%  { transform: translateX(1px); }
+      100% { transform: translateX(0) rotate(0deg); }
+    }
+    .fx-shiver main {
+      animation: shiver 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    }
+
   </style>
 </head>
 <body>
+  <div id="fx-overlay"></div>
 
   <!-- ── HEADER ── -->
   <header>
@@ -660,7 +766,7 @@
         <div class="stat-cards">
 
           <!-- Wind -->
-          <div class="stat-card">
+          <div class="stat-card" data-fx="wind">
             <div class="stat-card-header">
               <span class="stat-label">Wind Speed</span>
               <img src="icons/wind.svg" width="16" height="16" alt="" />
@@ -669,7 +775,7 @@
           </div>
 
           <!-- Humidity -->
-          <div class="stat-card">
+          <div class="stat-card" data-fx="humidity">
             <div class="stat-card-header">
               <span class="stat-label">Humidity</span>
               <img src="icons/droplet.svg" width="16" height="16" alt="" />
@@ -678,7 +784,7 @@
           </div>
 
           <!-- UV Index -->
-          <div class="stat-card">
+          <div class="stat-card" data-fx="uv">
             <div class="stat-card-header">
               <span class="stat-label">UV Index</span>
               <img src="icons/sun.svg" width="16" height="16" alt="" />
@@ -687,7 +793,7 @@
           </div>
 
           <!-- Feels Like -->
-          <div class="stat-card">
+          <div class="stat-card" data-fx="feels">
             <div class="stat-card-header">
               <span class="stat-label">Feels Like</span>
               <img src="icons/thermometer.svg" width="16" height="16" alt="" />
@@ -855,9 +961,35 @@
       }
     }
 
-    // Initial fetch + poll every 60s
+    // Initial fetch + poll every 30s
     fetchWeather();
     setInterval(fetchWeather, 30_000);
+
+    // ── Hover weather FX ──
+    const FX_CLASSES = ['fx-wind', 'fx-humidity', 'fx-uv', 'fx-shiver'];
+    let fxTimer = null;
+
+    function clearFx() {
+      clearTimeout(fxTimer);
+      FX_CLASSES.forEach(c => document.body.classList.remove(c));
+    }
+
+    document.querySelectorAll('[data-fx]').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        const fx = card.dataset.fx;
+        clearFx();
+
+        const durations = { wind: 2000, humidity: 2500, uv: 2000, feels: 900 };
+        const bodyClass = fx === 'feels' ? 'fx-shiver' : `fx-${fx}`;
+
+        document.body.classList.add(bodyClass);
+        fxTimer = setTimeout(clearFx, durations[fx]);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        // let the animation finish naturally
+      });
+    });
   </script>
 
 </body>
