@@ -298,12 +298,22 @@
       gap: 16px;
     }
 
+    .product-card {
+      overflow: hidden;
+    }
+
     .product-image {
-      aspect-ratio: 432 / 324;
+      aspect-ratio: 1 / 1;
       background: #111;
       border-radius: 16px;
       width: 100%;
       overflow: hidden;
+      transform: scale(1);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.03);
     }
 
     .product-image img {
@@ -392,6 +402,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .video-thumbnail video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 16px;
     }
 
     .play-button {
@@ -492,10 +512,7 @@
         flex: 0 0 100%;
       }
       .product-image {
-        aspect-ratio: 432 / 324;
-      }
-      .product-card:last-child .product-image {
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1 / 1;
       }
       .video-grid {
         flex-wrap: wrap;
@@ -573,7 +590,7 @@
         flex: unset;
       }
       .product-image {
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1 / 1;
       }
       .video-grid {
         flex-direction: column;
@@ -748,12 +765,7 @@
 
           <div class="video-item">
             <div class="video-thumbnail">
-              <div class="play-button">
-                <!-- Play triangle: 20x20, stroke #f9fc50, sw=2 -->
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="6,4 18,10 6,16" stroke="#f9fc50" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-              </div>
+              <video src="videos/storm-test.mp4" autoplay loop muted playsinline></video>
             </div>
             <div class="video-info">
               <span class="video-title">Storm Test</span>
@@ -763,11 +775,7 @@
 
           <div class="video-item">
             <div class="video-thumbnail">
-              <div class="play-button">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="6,4 18,10 6,16" stroke="#f9fc50" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-              </div>
+              <video src="videos/arctic-trial.mp4" autoplay loop muted playsinline></video>
             </div>
             <div class="video-info">
               <span class="video-title">Arctic Trial</span>
@@ -777,11 +785,7 @@
 
           <div class="video-item">
             <div class="video-thumbnail">
-              <div class="play-button">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="6,4 18,10 6,16" stroke="#f9fc50" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-              </div>
+              <video src="videos/uv-endurance.mp4" autoplay loop muted playsinline></video>
             </div>
             <div class="video-info">
               <span class="video-title">UV Endurance</span>
