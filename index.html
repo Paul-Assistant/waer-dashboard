@@ -44,11 +44,25 @@
       50%       { opacity: 0.4; transform: scale(0.75); }
     }
 
-    /* ── Fade-in on data load ── */
-    .data-val {
-      transition: opacity 0.35s ease;
+    /* ── Slot-machine roll animation ── */
+    @keyframes roll-out {
+      0%   { transform: translateY(0);    opacity: 1; }
+      100% { transform: translateY(-60%); opacity: 0; }
     }
-    .data-loading .data-val { opacity: 0; }
+    @keyframes roll-in {
+      0%   { transform: translateY(60%);  opacity: 0; }
+      100% { transform: translateY(0);    opacity: 1; }
+    }
+    .data-val {
+      display: inline-block;
+      overflow: hidden;
+    }
+    .data-val.rolling-out {
+      animation: roll-out 0.2s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+    }
+    .data-val.rolling-in {
+      animation: roll-in 0.25s cubic-bezier(0.0, 0, 0.2, 1) forwards;
+    }
 
     /* ═══════════════════════════
        HEADER
@@ -827,35 +841,29 @@
       return 'Extreme';
     }
 
+    function rollUpdate(el, newText) {
+      if (el.textContent === newText) return; // skip if unchanged
+      el.classList.remove('rolling-in', 'rolling-out');
+      void el.offsetWidth; // reflow
+      el.classList.add('rolling-out');
+      setTimeout(() => {
+        el.textContent = newText;
+        el.classList.remove('rolling-out');
+        void el.offsetWidth;
+        el.classList.add('rolling-in');
+        setTimeout(() => el.classList.remove('rolling-in'), 250);
+      }, 200);
+    }
+
     function setDataValues(data) {
       const c = data.current;
-
-      const tempEl      = document.getElementById('temp');
-      const windEl      = document.getElementById('wind');
-      const humidityEl  = document.getElementById('humidity');
-      const uvEl        = document.getElementById('uv');
-      const feelsEl     = document.getElementById('feels');
-      const conditionEl = document.getElementById('condition');
-
-      // Fade out
-      [tempEl, windEl, humidityEl, uvEl, feelsEl, conditionEl].forEach(el => {
-        el.style.opacity = '0';
-      });
-
-      setTimeout(() => {
-        const uv = c.uv_index;
-        tempEl.textContent      = Math.round(c.temperature_2m);
-        windEl.textContent      = c.wind_speed_10m + ' km/h';
-        humidityEl.textContent  = c.relative_humidity_2m + '%';
-        uvEl.textContent        = uv.toFixed(1) + ' ' + uvLabel(uv);
-        feelsEl.textContent     = c.apparent_temperature.toFixed(1) + ' °C';
-        conditionEl.textContent = WEATHER_CODES[c.weather_code] || 'Unknown';
-
-        // Fade in
-        [tempEl, windEl, humidityEl, uvEl, feelsEl, conditionEl].forEach(el => {
-          el.style.opacity = '1';
-        });
-      }, 150);
+      const uv = c.uv_index;
+      rollUpdate(document.getElementById('temp'),      String(Math.round(c.temperature_2m)));
+      rollUpdate(document.getElementById('wind'),      c.wind_speed_10m + ' km/h');
+      rollUpdate(document.getElementById('humidity'),  c.relative_humidity_2m + '%');
+      rollUpdate(document.getElementById('uv'),        uv.toFixed(1) + ' ' + uvLabel(uv));
+      rollUpdate(document.getElementById('feels'),     c.apparent_temperature.toFixed(1) + ' °C');
+      rollUpdate(document.getElementById('condition'), WEATHER_CODES[c.weather_code] || 'Unknown');
     }
 
     function setError() {
